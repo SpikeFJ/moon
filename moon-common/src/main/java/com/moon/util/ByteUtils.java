@@ -13,7 +13,7 @@ public class ByteUtils {
      * @param value
      * @return
      */
-    public boolean isBcd(byte value) {
+    public static boolean isBcd(byte value) {
         if ((value >> 4) > 9) {
             return false;
         }
@@ -40,7 +40,10 @@ public class ByteUtils {
      * @param value
      * @return
      */
-    public static int fromBcd(byte value) {
+    public static int fromBcd(byte value) throws Exception {
+        if (isBcd(value)) {
+            throw new Exception(value + "不是BCD码");
+        }
         return (value >> 4) * 10 + (value & 0x0F);
     }
 

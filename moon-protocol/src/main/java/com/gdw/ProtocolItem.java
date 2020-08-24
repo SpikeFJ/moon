@@ -11,11 +11,9 @@ public abstract class ProtocolItem {
     private int da;
     private int dt;
 
-    public byte[] getUserData() {
-        return new byte[0];
-    }
-
     public abstract int decode(byte[] data, int offset);
+
+    public abstract byte[] encode();
 
     public void setDt(int dt) {
         this.dt = dt;

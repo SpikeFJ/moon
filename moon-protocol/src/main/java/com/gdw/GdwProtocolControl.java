@@ -63,6 +63,7 @@ public class GdwProtocolControl {
 
     /**
      * 功能码
+     *
      * @param data
      * @return
      */
@@ -70,31 +71,37 @@ public class GdwProtocolControl {
         return data & 0x0F;
     }
 
-    public GdwProtocolControl dir(byte dir) {
+
+    public static GdwProtocolControl newInstance() {
+        GdwProtocolControl control = new GdwProtocolControl();
+        return control;
+    }
+
+    public GdwProtocolControl dir(int dir) {
         this.bytControl |= (dir << 7);
         return this;
     }
 
-    public GdwProtocolControl prm(byte prm) {
+    public GdwProtocolControl prm(int prm) {
         this.bytControl |= (prm << 6);
         return this;
     }
 
-    public GdwProtocolControl fcb(byte fcb) {
+    public GdwProtocolControl fcb(int fcb) {
         return acd(fcb);
     }
 
-    public GdwProtocolControl fcv(byte fcv) {
+    public GdwProtocolControl fcv(int fcv) {
         this.bytControl &= (fcv << 4);
         return this;
     }
 
-    public GdwProtocolControl acd(byte fcv) {
+    public GdwProtocolControl acd(int fcv) {
         this.bytControl &= (fcv << 5);
         return this;
     }
 
-    public GdwProtocolControl func(byte func) {
+    public GdwProtocolControl func(int func) {
         this.bytControl &= func;
         return this;
     }

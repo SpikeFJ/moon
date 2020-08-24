@@ -4,9 +4,10 @@ import java.util.List;
 
 /**
  * 通讯规约
+ *
  * @author spike
  */
-public interface Protocol<T> {
+public interface Protocol {
 
     /**
      * 规约名称
@@ -29,4 +30,12 @@ public interface Protocol<T> {
      * @return
      */
     void decode(byte[] data) throws Exception;
+
+    /**
+     * 组帧
+     *
+     * @return
+     */
+    byte[] encode();
+
 }

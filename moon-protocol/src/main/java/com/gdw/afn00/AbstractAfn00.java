@@ -16,4 +16,9 @@ public abstract class AbstractAfn00 extends ProtocolItem {
     public int decode(byte[] data, int offset) {
         return 0;
     }
+
+    @Override
+    public byte[] encode() {
+        return new byte[0];
+    }
 }

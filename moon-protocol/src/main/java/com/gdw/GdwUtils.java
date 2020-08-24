@@ -1,5 +1,7 @@
 package com.gdw;
 
+import com.moon.util.ByteUtils;
+
 /**
  * Gdw规约帮助类
  *
@@ -66,6 +68,15 @@ public class GdwUtils {
             bytSum += data[i];
         }
         return bytSum;
+    }
+
+    public static byte[] encodeA16(int day, int hour, int minute, int second) {
+        byte[] byt = new byte[4];
+        byt[0] = (byte) ByteUtils.toBcd(second);
+        byt[1] = (byte) ByteUtils.toBcd(minute);
+        byt[2] = (byte) ByteUtils.toBcd(hour);
+        byt[3] = (byte) ByteUtils.toBcd(day);
+        return byt;
     }
 
 }

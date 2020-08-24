@@ -49,7 +49,7 @@ public class GdwProtocolDecoder extends LengthFieldBasedFrameDecoder {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println(ByteBufUtil.hexDump((ByteBuf) msg));
+        logger.info(ByteBufUtil.hexDump((ByteBuf) msg));
         super.channelRead(ctx, msg);
     }
 

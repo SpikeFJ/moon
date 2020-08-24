@@ -9,7 +9,7 @@ import static com.gdw.GdwUtils.*;
  *
  * @author spike
  */
-public class GdwProtocol implements Protocol<ProtocolItem> {
+public class GdwProtocol implements Protocol {
 
     private static class Decoder {
 
@@ -38,7 +38,7 @@ public class GdwProtocol implements Protocol<ProtocolItem> {
     /**
      * 规约长度
      */
-    private int protocllength;
+    private int protocolLength;
 
     /**
      * 控制码
@@ -48,7 +48,7 @@ public class GdwProtocol implements Protocol<ProtocolItem> {
     /**
      * 行政区划码。
      */
-    private String areaAddress;
+    private int areaAddress;
 
     /**
      * 终端地址,选址范围为1～65535。0000H为无效地址，FFFFH且<ref>addressFlag</ref>的D0位为“1”时表示系统广播地址
@@ -73,7 +73,10 @@ public class GdwProtocol implements Protocol<ProtocolItem> {
      */
     private byte seq;
 
-    List<ProtocolItem> result;
+    /**
+     * 数据项
+     */
+    ProtocolItemCollection items;
 
     /**
      * 重要事件计数器
@@ -93,7 +96,11 @@ public class GdwProtocol implements Protocol<ProtocolItem> {
     /**
      * 启动帧发送时标
      */
-    private String sendTimeStamp;
+    private int day;
+    private int hour;
+    private int minute;
+    private int second;
+
 
     /**
      * 允许发送传输延时时间.单位：分钟
@@ -123,7 +130,7 @@ public class GdwProtocol implements Protocol<ProtocolItem> {
         byte[] bytProtocol = new byte[2];
         System.arraycopy(data, offset, bytProtocol, 0, 2);
         protoclIdentify = bytProtocol[0] & 0x02;
-        protocllength = getLength(bytProtocol);
+        protocolLength = getLength(bytProtocol);
         offset += 4;
 
         checkByte(data[offset++], PACKET_HEAD);
@@ -141,7 +148,7 @@ public class GdwProtocol implements Protocol<ProtocolItem> {
         afn = data[offset++];
         seq = data[offset++];
 
-        byte[] userData = new byte[protocllength];
+        byte[] userData = new byte[protocolLength];
         System.arraycopy(data, offset, userData, 0, userData.length);
 
         offset += decodeUserData(data, offset);
@@ -154,8 +161,10 @@ public class GdwProtocol implements Protocol<ProtocolItem> {
 
         if (GdwprotocolSeq.getTpv(seq) == 1) {
             pfc = data[offset++];
-            sendTimeStamp = "";
-            offset += 4;
+            second = data[offset++];
+            minute = data[offset++];
+            hour = data[offset++];
+            day = data[offset++];
             allowDelay = data[offset++];
         }
 
@@ -172,7 +181,7 @@ public class GdwProtocol implements Protocol<ProtocolItem> {
      * @param startIndex
      * @return 用户数据的长度
      */
-    public int decodeUserData(byte[] data, int startIndex) {
+    protected int decodeUserData(byte[] data, int startIndex) {
 
         int offset = 0;
 
@@ -190,31 +199,78 @@ public class GdwProtocol implements Protocol<ProtocolItem> {
 
             offset += item.decode(data, startIndex + offset);
 
-            result.add(item);
+            items.add(item);
         }
 
         return offset;
     }
 
-    public byte[] encode(ProtocolItem protocolItem) {
+    public byte[] encode() {
         //判断附加信息域中是否包含密码PW/EC、时间标签Tp
         boolean havePw = Afn.haveEc(afn);
         int pwLength = havePw ? (this.protoclIdentify < 3 ? 2 : 16) : 0;
-        byte[] userData = protocolItem.getUserData();
+        byte[] userData = items.encode();
         int totalLength = ((userData.length + pwLength + 8) << 2) + this.protoclIdentify;
 
         int offset = 0;
         byte[] value = new byte[16 + userData.length + pwLength];
-        value[offset++] = 0x68;
+        value[offset++] = PACKET_HEAD;
         value[offset++] = (byte) (totalLength % 256);
         value[offset++] = (byte) (totalLength / 256);
         value[offset++] = (byte) (totalLength % 256);
         value[offset++] = (byte) (totalLength / 256);
-        value[offset++] = 0x68;
-
+        value[offset++] = PACKET_HEAD;
 
         value[offset++] = (byte) controlCode;
 
+        byte[] bytAreaAddress = GdwProtocolAddress.getAreaAddress(this.areaAddress);
+        System.arraycopy(bytAreaAddress, 0, value, offset, bytAreaAddress.length);
+        offset += 2;
+
+        byte[] bytTerminalAddress = GdwProtocolAddress.getTerminalAddress(this.terminalAddress);
+        System.arraycopy(bytTerminalAddress, 0, value, offset, bytTerminalAddress.length);
+        offset += 2;
+
+        value[offset++] = addressFlag;
+
+        value[offset++] = (byte) afn;
+        value[offset++] = seq;
+
+        System.arraycopy(userData, 0, value, offset, userData.length);
+        offset += userData.length;
+
+
+        if (GdwProtocolControl.getDir(controlCode) == 0) {
+            if (Afn.havePw(afn)) {
+                //下行
+                byte[] bytPw = new byte[16];
+
+                System.arraycopy(bytPw, 0, value, offset, bytPw.length);
+                offset += bytPw.length;
+            }
+        } else {
+            //上行
+            value[offset++] = (byte) ec1;
+            value[offset++] = (byte) ec2;
+        }
+
+        if (GdwprotocolSeq.getTpv(seq) == 1) {
+            //时间标签
+            value[offset++] = (byte) pfc;
+
+            byte[] bytTime = GdwUtils.encodeA16(day, hour, minute, second);
+            System.arraycopy(bytTime, 0, value, offset, bytTime.length);
+            offset += bytTime.length;
+
+            value[offset++] = (byte) allowDelay;
+        }
+        byte calcSum = (byte) calcCs(value, offset);
+        value[offset++] = calcSum;
+        value[offset++] = PACKET_TAIL;
+        return value;
+    }
+
+    protected byte[] encodeUserData() {
         return new byte[0];
     }
 
@@ -226,12 +282,12 @@ public class GdwProtocol implements Protocol<ProtocolItem> {
         this.protoclIdentify = protoclIdentify;
     }
 
-    public int getProtocllength() {
-        return protocllength;
+    public int getProtocolLength() {
+        return protocolLength;
     }
 
-    public void setProtocllength(int protocllength) {
-        this.protocllength = protocllength;
+    public void setProtocolLength(int protocolLength) {
+        this.protocolLength = protocolLength;
     }
 
     public byte getControlCode() {
@@ -242,11 +298,11 @@ public class GdwProtocol implements Protocol<ProtocolItem> {
         this.controlCode = controlCode;
     }
 
-    public String getAreaAddress() {
+    public int getAreaAddress() {
         return areaAddress;
     }
 
-    public void setAreaAddress(String areaAddress) {
+    public void setAreaAddress(int areaAddress) {
         this.areaAddress = areaAddress;
     }
 
@@ -282,12 +338,12 @@ public class GdwProtocol implements Protocol<ProtocolItem> {
         this.seq = seq;
     }
 
-    public List<ProtocolItem> getResult() {
-        return result;
+    public ProtocolItemCollection getResult() {
+        return items;
     }
 
-    public void setResult(List<ProtocolItem> result) {
-        this.result = result;
+    public void setResult(ProtocolItemCollection result) {
+        this.items = result;
     }
 
     public int getEc1() {
@@ -315,11 +371,7 @@ public class GdwProtocol implements Protocol<ProtocolItem> {
     }
 
     public String getSendTimeStamp() {
-        return sendTimeStamp;
-    }
-
-    public void setSendTimeStamp(String sendTimeStamp) {
-        this.sendTimeStamp = sendTimeStamp;
+        return day + "日" + hour + ":" + minute + ":" + second;
     }
 
     public int getAllowDelay() {

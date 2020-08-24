@@ -1,5 +1,8 @@
 package com.gdw.afn00;
 
+/**
+ * @author spike
+ */
 public class F3Body {
     private byte[] bytDaDt;
 
