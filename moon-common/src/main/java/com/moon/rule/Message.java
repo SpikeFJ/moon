@@ -4,6 +4,7 @@ package com.moon.rule;
  * 事件传递消息
  * @author spike
  */
+//@Topic("device_create")
 public class Message {
 
     /**

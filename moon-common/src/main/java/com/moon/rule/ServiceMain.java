@@ -17,10 +17,6 @@ public class ServiceMain {
         //
         //Trigger trigger  = new DeviceTrigger();
         //trigger.start();
-
-        //
-//        ReentrantLock
-//        ThreadPoolExecutor
     }
 
 }

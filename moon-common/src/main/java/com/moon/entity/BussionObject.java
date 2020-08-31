@@ -5,5 +5,9 @@ package com.moon.entity;
  */
 public abstract class BussionObject {
 
+    public int id;
 
+    public void save() {
+
+    }
 }

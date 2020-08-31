@@ -12,6 +12,7 @@
         <module>moon-protocol</module>
         <module>moon-common</module>
         <module>moon-test</module>
+        <module>moon-wx</module>
     </modules>
     <packaging>pom</packaging>
 

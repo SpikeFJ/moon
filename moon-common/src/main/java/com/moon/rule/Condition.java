@@ -6,17 +6,12 @@ package com.moon.rule;
  * @author spike
  */
 public interface Condition {
-    /**
-     * 条件执行
-     *
-     * @return
-     */
-    boolean execute();
 
     /**
-     * 设置传递消息
+     * 执行条件判断
      *
-     * @param message
+     * @param message 参数
+     * @return
      */
-    void setMessage(Message message);
+    boolean check(Message message);
 }

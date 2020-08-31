@@ -8,6 +8,8 @@ import com.moon.rule.Condition;
  *
  * @author spike
  */
-public abstract class AbtractDeviceCondition implements Condition {
-    public Device device;
+public abstract class DeviceCondition implements Condition {
+
+    public abstract boolean check(Device device);
+
 }
