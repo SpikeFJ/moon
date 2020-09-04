@@ -28,45 +28,67 @@ import java.util.EventListener;
  *
  * @author spike
  */
-public abstract class Trigger implements EventListener {
+public class Trigger implements EventListener {
 
     /**
      * 消息
      */
-    public Message message;
+    private Message message;
 
     /**
      * 条件
      *
      * @return
      */
-    public Condition condition;
+    private Condition condition;
 
     /**
      * 动作
      *
      * @return
      */
-    public Action action;
+    private Action action;
 
     /**
      * 事件驱动该方法检测
      */
     public void doCheck(Message message) {
         if (condition.check(message)) {
-            action.action();
+
+            Message tmpMessage = new Message();
+            tmpMessage.attachData.put("statment", "这是一个测试");
+            action.action(tmpMessage);
         }
     }
 
     public void start() {
-        //监听消息中间件
-        //doCheck(message)
+        if (condition.getTopic() != "") {
+            //1.开启消息监听
+            //2.设置回调函数为doCheck
+        }
     }
 
-    /**
-     * 关注的事件topic.（topic和消息中间件耦合？）
-     *
-     * @return
-     */
-    public abstract String getTopic();
+    public Message getMessage() {
+        return message;
+    }
+
+    public void setMessage(Message message) {
+        this.message = message;
+    }
+
+    public Condition getCondition() {
+        return condition;
+    }
+
+    public void setCondition(Condition condition) {
+        this.condition = condition;
+    }
+
+    public Action getAction() {
+        return action;
+    }
+
+    public void setAction(Action action) {
+        this.action = action;
+    }
 }

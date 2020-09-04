@@ -1,15 +1,14 @@
-package com.moon.rule.device;
+package com.moon.rule.condition;
 
 import com.moon.entity.Device;
 import com.moon.rule.Condition;
 
 /**
- * 设备条件
+ * 设备条件。
  *
  * @author spike
  */
 public abstract class DeviceCondition implements Condition {
 
     public abstract boolean check(Device device);
-
 }

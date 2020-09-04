@@ -1,20 +1,22 @@
 package com.moon.rule;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 事件传递消息
+ *
  * @author spike
  */
-//@Topic("device_create")
 public class Message {
-
     /**
-     * 数据来源对象
+     * 消息类型。 00：设备档案 01：设备数据 02：设备操作 11：用户操作 。。。
      */
-    public Object Source;
+    public int messageType;
 
     /**
      * 附加数据
      */
-    public Object AttachData;
+    public Map<String, Object> attachData;
 
 }

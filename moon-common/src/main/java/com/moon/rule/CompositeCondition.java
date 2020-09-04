@@ -32,6 +32,11 @@ public class CompositeCondition implements Condition {
         return true;
     }
 
+    @Override
+    public String getTopic() {
+        return null;
+    }
+
     public void addCondition(Condition condition) {
         conditionList.add(condition);
     }
