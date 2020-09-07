@@ -1,5 +1,7 @@
 package com.moon.entity;
 
+import com.moon.rule.annotation.ProperyDesc;
+
 /**
  * 设备档案
  *
@@ -7,7 +9,10 @@ package com.moon.entity;
  */
 public class Device extends BussionObject {
 
+    @ProperyDesc("温度")
     private int a;
+
+    @ProperyDesc("湿度")
     public String b;
 
     public int getA() {

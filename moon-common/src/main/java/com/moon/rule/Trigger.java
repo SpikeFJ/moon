@@ -26,6 +26,13 @@ import java.util.EventListener;
  * 2) A设备持续N分钟数据越限
  * 从A设备的最后一次有数据计算，所以每次数据到达时，都要开始一个计算任务
  *
+ *
+ * 所有的事件通知都是用来触发条件判断以及后续执行，
+ * 所有的事件数据都是用来填充业务对象的
+ *
+ * 后续所有的判断都是基于内存中的业务对象来判断
+ *
+ *
  * @author spike
  */
 public class Trigger implements EventListener {
