@@ -1,6 +1,7 @@
 package com.moon.rule;
 
 import java.util.EventListener;
+import java.util.List;
 
 /**
  * 触发器包含消息，条件和动作。
@@ -25,17 +26,26 @@ import java.util.EventListener;
  * <p>
  * 2) A设备持续N分钟数据越限
  * 从A设备的最后一次有数据计算，所以每次数据到达时，都要开始一个计算任务
- *
- *
+ * <p>
+ * <p>
  * 所有的事件通知都是用来触发条件判断以及后续执行，
  * 所有的事件数据都是用来填充业务对象的
- *
+ * <p>
  * 后续所有的判断都是基于内存中的业务对象来判断
- *
  *
  * @author spike
  */
-public class Trigger implements EventListener {
+public class Trigger {
+
+    /**
+     * 触发时机，主要是确定监听Topic：时机是由Topic确定。
+     * <p>
+     * 时机又是由业务对象决定的：
+     * 如设备 有：设备创建时，设备数据上报时
+     * <p>
+     * 可以没有时机，那就直接开启线程判断条件。
+     */
+    private List<When> when;
 
     /**
      * 消息
@@ -60,19 +70,21 @@ public class Trigger implements EventListener {
      * 事件驱动该方法检测
      */
     public void doCheck(Message message) {
-        if (condition.check(message)) {
-
-            Message tmpMessage = new Message();
-            tmpMessage.attachData.put("statment", "这是一个测试");
-            action.action(tmpMessage);
+        if (condition.evaluate(message)) {
+            action.execute(wrapMessage(message));
         }
     }
+
 
     public void start() {
         if (condition.getTopic() != "") {
             //1.开启消息监听
             //2.设置回调函数为doCheck
         }
+    }
+
+    public Message wrapMessage(Message input) {
+        return input;
     }
 
     public Message getMessage() {

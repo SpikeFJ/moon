@@ -14,17 +14,17 @@ public class CompositeCondition implements Condition {
     public Operaction operaction = Operaction.And;
 
     @Override
-    public boolean check(Message message) {
+    public boolean evaluate(Message message) {
         if (operaction == Operaction.And) {
             for (Condition condition : conditionList) {
-                if (condition.check(message) == false) {
+                if (condition.evaluate(message) == false) {
                     return false;
                 }
             }
 
         } else if (operaction == Operaction.Or) {
             for (Condition condition : conditionList) {
-                if (condition.check(message) == true) {
+                if (condition.evaluate(message) == true) {
                     return true;
                 }
             }

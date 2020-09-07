@@ -10,5 +10,5 @@ public interface Action {
     /**
      * 执行动作
      */
-    void action(Message message);
+    void execute(Message message);
 }

@@ -18,7 +18,7 @@ public interface Condition {
      * @param message 参数
      * @return
      */
-    boolean check(Message message);
+    boolean evaluate(Message message);
 
     /**
      * 需要订阅的事件

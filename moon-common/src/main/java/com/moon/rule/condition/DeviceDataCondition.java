@@ -23,7 +23,7 @@ public class DeviceDataCondition implements Condition {
 
 
     @Override
-    public boolean check(Message message) {
+    public boolean evaluate(Message message) {
         return false;
     }
 

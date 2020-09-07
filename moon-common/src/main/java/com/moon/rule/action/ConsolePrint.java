@@ -18,7 +18,7 @@ public class ConsolePrint implements Action {
     private String message;
 
     @Override
-    public void action(Message message) {
+    public void execute(Message message) {
         //1. 打印固定的语句
         //2. 打印执行判断时的信息
         System.out.println(this.message);

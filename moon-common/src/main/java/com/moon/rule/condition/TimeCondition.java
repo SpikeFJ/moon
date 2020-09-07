@@ -16,7 +16,7 @@ import com.moon.rule.Message;
  */
 public class TimeCondition implements Condition {
     @Override
-    public boolean check(Message message) {
+    public boolean evaluate(Message message) {
         return false;
     }
 

@@ -15,7 +15,7 @@ public class ActionTest {
         // then  在 XX 时间 do(用户A移除)
 
         // if 业务对象的属性/数据 满足 条件
-        // then 立刻/延时 执行 action
+        // then 立刻/延时 执行 execute
 
         //设备A，用户都属于业务对象
         //日电量、角色都属于业务对象的属性/数据
