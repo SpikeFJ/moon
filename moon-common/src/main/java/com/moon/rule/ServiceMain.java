@@ -14,7 +14,7 @@ public class ServiceMain {
         // topic_device_data 包含不同的数据：温度、湿度等
 
         //
-        Trigger trigger  = new Trigger();
+        Trigger trigger  = new DefaultTrigger();
         trigger.start();
     }
 

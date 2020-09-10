@@ -35,7 +35,7 @@ import java.util.List;
  *
  * @author spike
  */
-public class Trigger {
+public abstract class Trigger {
 
     /**
      * 触发时机，主要是确定监听Topic：时机是由Topic确定。
@@ -71,21 +71,22 @@ public class Trigger {
      */
     public void doCheck(Message message) {
         if (condition.evaluate(message)) {
-            action.execute(wrapMessage(message));
+            action.execute(messageToAction(message));
         }
     }
 
+    /**
+     * 1.如果通知依赖于第三方中间件，如mq，则在start中订阅相关topic
+     * 2.如果不依赖于第三方，直接方法间调用，则使用观察者模式，在start中将自身作为监听者添加到观察者主题中。
+     */
+    public abstract void start();
 
-    public void start() {
-        if (condition.getTopic() != "") {
-            //1.开启消息监听
-            //2.设置回调函数为doCheck
-        }
-    }
-
-    public Message wrapMessage(Message input) {
-        return input;
-    }
+    /**
+     * 组织执行action需要的参数
+     * @param input
+     * @return
+     */
+    public abstract Message messageToAction(Message input);
 
     public Message getMessage() {
         return message;
