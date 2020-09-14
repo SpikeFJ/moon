@@ -15,7 +15,7 @@ public interface Condition {
     /**
      * 执行条件判断
      *
-     * @param message 参数
+     * @param message message参数包括条件判断需要的参数，如上报的数据，事件发生源等信息
      * @return
      */
     boolean evaluate(Message message);

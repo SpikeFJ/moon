@@ -6,4 +6,5 @@ package com.moon.rule.annotation;
  */
 public @interface ProperyDesc {
     String value();
+    String topic();
 }
