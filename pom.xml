@@ -13,6 +13,7 @@
         <module>moon-common</module>
         <module>moon-test</module>
         <module>moon-wx</module>
+        <module>moon-rule</module>
     </modules>
     <packaging>pom</packaging>
 

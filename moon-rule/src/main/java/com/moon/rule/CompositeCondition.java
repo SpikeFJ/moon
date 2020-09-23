@@ -11,18 +11,18 @@ import java.util.List;
 public class CompositeCondition implements Condition {
 
     private List<Condition> conditionList = new ArrayList<>();
-    public Operaction operaction = Operaction.And;
+    public LogicOperaction operaction = LogicOperaction.And;
 
     @Override
     public boolean evaluate(Message message) {
-        if (operaction == Operaction.And) {
+        if (operaction == LogicOperaction.And) {
             for (Condition condition : conditionList) {
                 if (condition.evaluate(message) == false) {
                     return false;
                 }
             }
 
-        } else if (operaction == Operaction.Or) {
+        } else if (operaction == LogicOperaction.Or) {
             for (Condition condition : conditionList) {
                 if (condition.evaluate(message) == true) {
                     return true;
@@ -30,11 +30,6 @@ public class CompositeCondition implements Condition {
             }
         }
         return true;
-    }
-
-    @Override
-    public String getTopic() {
-        return null;
     }
 
     public void addCondition(Condition condition) {

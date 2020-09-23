@@ -13,6 +13,6 @@ public class Test {
         //[a,b]=[c,d]
         BacktrackLexer lexer = new BacktrackLexer(args[0]); // parse arg
         BacktrackParser parser = new BacktrackParser(lexer);
-        parser.stat(); // begin parsing at rule stat
+        parser.stat(); // begin parsing at com.moon.rule stat
     }
 }

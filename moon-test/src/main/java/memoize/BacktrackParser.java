@@ -83,7 +83,7 @@ public class BacktrackParser extends Parser {
 
     // match '[' elements ']'
     public void _list() throws RecognitionException {
-        System.out.println("parse list rule at token index: " + index());
+        System.out.println("parse list com.moon.rule at token index: " + index());
         match(BacktrackLexer.LBRACK);
         elements();
         match(BacktrackLexer.RBRACK);
@@ -91,7 +91,7 @@ public class BacktrackParser extends Parser {
 
     /**
      * Map input position to FAILED or previous stop token index.
-     * null implies we've not parsed this rule at that index.
+     * null implies we've not parsed this com.moon.rule at that index.
      */
     Map<Integer, Integer> list_memo = new HashMap<Integer, Integer>();
 

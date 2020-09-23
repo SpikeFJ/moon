@@ -13,6 +13,6 @@ public class Test {
         //[a,b,c=d]
         LookaheadLexer lexer = new LookaheadLexer(args[0]); // parse arg
         LookaheadParser parser = new LookaheadParser(lexer, 2);
-        parser.list(); // begin parsing at rule list
+        parser.list(); // begin parsing at com.moon.rule list
     }
 }

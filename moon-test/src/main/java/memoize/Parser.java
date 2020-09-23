@@ -98,7 +98,7 @@ public abstract class Parser {
     }
 
     /**
-     * Have we parsed a particular rule before at this input position?
+     * Have we parsed a particular com.moon.rule before at this input position?
      * If no memoization value, we've never parsed here before.
      * If memoization value is FAILED, we parsed and failed before.
      * If value >= 0, it is an index into the token buffer.  It indicates
@@ -118,20 +118,20 @@ public abstract class Parser {
         if (memo == FAILED) {
             throw new PreviousParseFailedException();
         }
-        // else skip ahead, pretending we parsed this rule ok
+        // else skip ahead, pretending we parsed this com.moon.rule ok
         seek(memo);
         return true;
     }
 
     /**
      * While backtracking, record partial parsing results.
-     * If invoking rule method failed, record that fact.
+     * If invoking com.moon.rule method failed, record that fact.
      * If it succeeded, record the token position we should skip to
-     * next time we attempt this rule for this input position.
+     * next time we attempt this com.moon.rule for this input position.
      */
     public void memoize(Map<Integer, Integer> memoization,
                         int startTokenIndex, boolean failed) {
-        // record token just after last in rule if success
+        // record token just after last in com.moon.rule if success
         int stopTokenIndex = failed ? FAILED : index();
         memoization.put(startTokenIndex, stopTokenIndex);
     }

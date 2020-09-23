@@ -19,9 +19,4 @@ public class TimeCondition implements Condition {
     public boolean evaluate(Message message) {
         return false;
     }
-
-    @Override
-    public String getTopic() {
-        return null;
-    }
 }

@@ -13,6 +13,6 @@ public class Test {
         //[a,cd]
         ListLexer lexer = new ListLexer(args[0]); // parse command-line arg
         ListParser parser = new ListParser(lexer);
-        parser.list(); // begin parsing at rule list
+        parser.list(); // begin parsing at com.moon.rule list
     }
 }

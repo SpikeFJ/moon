@@ -19,11 +19,4 @@ public interface Condition {
      * @return
      */
     boolean evaluate(Message message);
-
-    /**
-     * 需要订阅的事件
-     *
-     * @return
-     */
-    String getTopic();
 }
